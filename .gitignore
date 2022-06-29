@@ -131,3 +131,10 @@ dmypy.json
 
 # Pycharm
 .idea/
+
+# Videos
+*.mp4
+*.jpg
+*.gif
+*.png
+*.null

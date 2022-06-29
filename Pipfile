@@ -9,6 +9,9 @@ requests = "*"
 flask = "*"
 wtforms = "*"
 bs4 = "*"
+lxml = "*"
+aiohttp = "*"
+aiofiles = "*"
 
 [dev-packages]
 
