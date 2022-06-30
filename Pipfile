@@ -12,6 +12,7 @@ bs4 = "*"
 lxml = "*"
 aiohttp = "*"
 aiofiles = "*"
+pycryptodome = "*"
 
 [dev-packages]
 

@@ -138,3 +138,4 @@ dmypy.json
 *.gif
 *.png
 *.null
+*.ts
