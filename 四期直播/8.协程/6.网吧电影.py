@@ -1,5 +1,8 @@
 import re
 import requests
+import asyncio
+import aiohttp
+import aiofiles
 from lxml import etree
 from urllib.parse import urljoin
 
@@ -55,6 +58,20 @@ def download_m3u8(url):
                 break
 
 
+async def download_all_videos():
+    # 1.读取文件
+    with open("second.m3u8", mode="r", encoding="utf-8") as f:
+        for line in f:
+            if line.startswith("#"):
+                continue
+            line = line.strip()  # 这里一定要加上，每次都要强调
+            # 此时，line就是下载地址
+    # 2.创建任务
+
+    # 3.统一等待
+    pass
+
+
 def main():
     url = "http://www.wbdy.tv/play/63690_1_1.html"
     # 1.拿到iframe的src属性值
@@ -66,7 +83,10 @@ def main():
     # print(m3u8_url)
     # 3.下载m3u8文件
     download_m3u8(m3u8_url)
-    # 4.下载视频
+    # 4.下载视频.上协程下载视频
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(download_all_videos)
 
 
 if __name__ == '__main__':
