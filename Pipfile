@@ -13,6 +13,7 @@ lxml = "*"
 aiohttp = "*"
 aiofiles = "*"
 pycryptodome = "*"
+selenium = "*"
 
 [dev-packages]
 
