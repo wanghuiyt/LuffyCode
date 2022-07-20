@@ -22,7 +22,7 @@ options = ChromeOptions()
 options.binary_location = r"D:\SoftWare\Google\Chrome\Application\chrome.exe"
 web = Chrome(options=options)
 web.implicitly_wait(10)
-web.maximize_window()
+# web.maximize_window()
 web.get("https://www.bilibili.com/")
 web.find_element(By.XPATH, '//*[@class="header-login-entry"]/span').click()
 web.find_element(By.XPATH, '//*[@class="bili-mini-account"]/input').send_keys("1738407610@qq.com")
@@ -40,11 +40,10 @@ rs = result.split("|")
 for r in rs:
     x, y = r.split(",")
     # 转化成数字
-    x = int(x)
-    y = int(y)
+    print(x, y)
     # 找截图的那个位置的左上角，横向移动xxx，纵向移动xxx，点击
     # 事件链，动作链，一系列动作，需要perform提交
-    ActionChains(web).move_to_element_with_offset(tu, xoffset=x, yoffset=y).click().perform()
+    ActionChains(web).move_to_element_with_offset(to_element=tu, xoffset=x, yoffset=y).click(on_element=tu).perform()
     time.sleep(1)
 time.sleep(1)
 web.find_element(By.XPATH, '//*[@class="geetest_commit_tip"]').click()
