@@ -37,13 +37,19 @@ result = base64_api("q6035945", "q6035945", "tu.png", 27)
 print(result)  # 157,150|43,189
 
 rs = result.split("|")
+width = tu.size.get("width")
+height = tu.size.get("height")
 for r in rs:
     x, y = r.split(",")
     # 转化成数字
+    x = int(x)
+    y = int(y)
     print(x, y)
     # 找截图的那个位置的左上角，横向移动xxx，纵向移动xxx，点击
     # 事件链，动作链，一系列动作，需要perform提交
-    ActionChains(web).move_to_element_with_offset(to_element=tu, xoffset=x, yoffset=y).click(on_element=tu).perform()
+    x = x - (width // 2)
+    y = y - (height // 2)
+    ActionChains(web).move_to_element_with_offset(to_element=tu, xoffset=x, yoffset=y).click().perform()
     time.sleep(1)
 time.sleep(1)
 web.find_element(By.XPATH, '//*[@class="geetest_commit_tip"]').click()
