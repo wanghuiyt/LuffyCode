@@ -15,6 +15,8 @@ aiofiles = "*"
 pycryptodome = "*"
 selenium = "*"
 pymysql = "*"
+pymongo = "*"
+redis = "*"
 
 [dev-packages]
 
