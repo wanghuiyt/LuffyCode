@@ -33,6 +33,9 @@ class ProxyRedis:
         # 1.先判断是否存在IP
         if not self.redis.zscore(self.name, ip):
             self.redis.zadd(self.name, {ip: 10})
+            print("采集到新的IP地址了", ip)
+        else:
+            print("采集到新的IP地址了", ip, "但是已经存在了")
 
     def get_all_proxy_ip(self):
         return self.redis.zrange(self.name, 0, -1)
@@ -43,9 +46,9 @@ class ProxyRedis:
     def desc_incrby(self, ip):
         # 先查询分值
         score = self.redis.zscore(self.name, ip)
-        # 如果分值还有，扣1分
+        # 如果分值还有，扣5分
         if score and score > 0:
-            self.redis.zincrby(self.name, -1, ip)
+            self.redis.zincrby(self.name, -5, ip)
         else:
             # 如果分值已经扣没了，可以再见了
             self.redis.zrem(self.name, ip)
