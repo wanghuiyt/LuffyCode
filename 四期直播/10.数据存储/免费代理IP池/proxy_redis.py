@@ -3,6 +3,7 @@
 """
 import random
 from redis import Redis
+from settings import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD, REDIS_KEY
 
 
 class ProxyRedis:
@@ -20,12 +21,12 @@ class ProxyRedis:
             还有就不给
     """
     def __init__(self):
-        self.name = "proxy_ip"
+        self.name = REDIS_KEY
         self.redis = Redis(
-            host="localhost",
-            port=6379,
-            password="123456",
-            db=0,
+            host=REDIS_HOST,
+            port=REDIS_PORT,
+            password=REDIS_PASSWORD,
+            db=REDIS_DB,
             decode_responses=True
         )
 

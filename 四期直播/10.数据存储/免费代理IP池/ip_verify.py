@@ -2,8 +2,11 @@
 负责代理IP的校验工作
 """
 import asyncio
+import time
+
 import aiohttp
 from proxy_redis import ProxyRedis
+from multiprocessing import Process
 
 r = ProxyRedis()
 
@@ -16,8 +19,8 @@ async def verify_one(ip, sem):
         try:
             async with aiohttp.ClientSession() as session:
                 # requests.get(url, proxies={"http": "http://192.168.1.1:3000"})
-                async with session.get("http://www.baidu.com", proxy=f"http://{ip}", timeout=timeout) as resp:
-                    page_source = await resp.text()
+                async with session.get("http://www.baidu.com/s?wd=ip", proxy=f"http://{ip}", timeout=timeout) as resp:
+                    _ = await resp.text()
                     if resp.status in [200, 302]:
                         r.set_max_score(ip)
                         print(f"检测到{ip}，是可用的，分值拉满")
@@ -26,7 +29,7 @@ async def verify_one(ip, sem):
                         print(f"{ip}, 本次不可以，要扣分了")
         except Exception as ex:
             r.desc_incrby(ip)
-            print(f"检测{ip}，出现异常，{ex.args}")
+            print(f"检测{ip}，出现异常,", ex)
 
 # 用协程最合适
 async def main():
@@ -37,12 +40,24 @@ async def main():
     tasks = []
     for ip in all_proxies:
         tasks.append(asyncio.create_task(verify_one(ip, sem)))
-    await asyncio.wait(tasks)
+    if tasks:
+        await asyncio.wait(tasks)
+
+
+def run():
+    time.sleep(10)
+    while True:
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(main())
+            time.sleep(100)
+        except Exception as e:
+            print("在校验的时候报错了,", e)
 
 
 if __name__ == '__main__':
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(main())
+    p = Process(target=run)
+    p.start()
 
 
