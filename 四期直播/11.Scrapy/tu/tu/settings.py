@@ -65,7 +65,11 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'tu.pipelines.TuPipeline': 300,
+   'tu.pipelines.MyTuPipeline': 300,
 }
+
+# 下载图片，必须给出一个配置, 总路径设置
+IMAGES_STORE = "./img"
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
