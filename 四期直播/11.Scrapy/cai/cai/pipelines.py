@@ -5,9 +5,10 @@
 
 
 # useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
+# from itemadapter import ItemAdapter
 import pymysql
 import pymongo
+import redis
 
 
 # 存文件
@@ -27,7 +28,7 @@ class CaiPipeline:
         self.f.close()
 
     def process_item(self, item, spider):
-        # print("这是管道 ", item)
+        print("这是管道 ", item)
         # 存储数据：文件，MySQL，mongodb，redis
         self.f.write(item['qi'])
         self.f.write(',')
@@ -35,6 +36,8 @@ class CaiPipeline:
         self.f.write(',')
         self.f.write(item['blue_ball'])
         self.f.write('\n')
+        # return在process_item中的逻辑，是将数据传递给下一个管道
+        # 可以修改item里的值，并传递给下一个管道
         return item
 
 
@@ -53,7 +56,8 @@ class MySQLPipeline:
 
     def close_spider(self, spider):
         # 关闭连接
-        self.cur.close()
+        if self.cur:
+            self.cur.close()
         self.conn.close()
 
     def process_item(self, item, spider):
@@ -71,15 +75,36 @@ class MySQLPipeline:
         return item
 
 
+# 存mongo
 class MongoPipeline:
     def open_spider(self, spider):
         self.conn = pymongo.MongoClient(host="localhost", port=27017)
         self.db = self.conn["python_3"]
 
-
     def close_spider(self, spider):
         self.conn.close()
 
     def process_item(self, item, spider):
-        self.db.ssq.insert_one(item)
+        self.db.ssq.insert_one({"qi": item['qi'], "red_ball": item['red_ball'], "blue_ball": item["blue_ball"]})
+        return item
+
+
+# 存redis
+class RedisPipeline:
+    def open_spider(self, spider):
+        self.redis = redis.Redis(
+            host="localhost",
+            port=6379,
+            password="promotion",
+            db=0,
+            decode_responses=True
+        )
+
+    def close_spider(self, spider):
+        self.redis.close()
+
+    def process_item(self, item, spider):
+        # self.redis.hset(item['qi'], "qi", item['qi'])
+        self.redis.hset(item['qi'], "red_ball", item['red_ball'])
+        self.redis.hset(item['qi'], "blue_ball", item['blue_ball'])
         return item

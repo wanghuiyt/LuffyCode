@@ -8,7 +8,7 @@ class SsqSpider(scrapy.Spider):
     allowed_domains = ['sina.com.cn']
     start_urls = ['https://match.lottery.sina.com.cn/lotto/pc_zst/index?lottoType=ssq&actionType=chzs']
 
-    def parse(self, resp: HtmlResponse):
+    def parse(self, resp: HtmlResponse, **kwargs):
         # print(resp.text)
         # 解析出你需要的数据
         trs = resp.xpath('//*[@id="cpdata"]/tr')
@@ -22,6 +22,6 @@ class SsqSpider(scrapy.Spider):
             # 官方推荐使用Item来约束数据结构，提前定义这个结构
             item = CaiItem()
             item["qi"] = qi
-            item["red_ball"] = red_ball
+            item["red_ball"] = '_'.join(red_ball)
             item["blue_ball"] = blue_ball
             yield item
