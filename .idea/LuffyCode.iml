@@ -5,6 +5,8 @@
       <sourceFolder url="file://$MODULE_DIR$/四期直播/11.Scrapy/cai" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/四期直播/11.Scrapy/game" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/四期直播/11.Scrapy/tu" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/四期直播/12.Scrapy模拟登录及分页/xiaoshuo" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/四期直播/12.Scrapy模拟登录及分页/xiaoshuo2" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/7.多线程和多进程/img" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密前" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密后" />
