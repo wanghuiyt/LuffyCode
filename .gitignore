@@ -138,3 +138,6 @@ dmypy.json
 *.gif
 *.null
 *.ts
+/四期直播/7.多线程和多进程/img/*.jpg
+/四期直播/7.多线程和多进程/img/*.png
+/四期直播/11.Scrapy/tu/img/dongman/imgs/kunmo/libaojun/liyijia/*.jpg
