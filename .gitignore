@@ -135,8 +135,6 @@ dmypy.json
 
 # Videos
 *.mp4
-*.jpg
 *.gif
-*.png
 *.null
 *.ts
