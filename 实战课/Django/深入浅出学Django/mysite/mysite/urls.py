@@ -14,11 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from mysite.views import timer
-
+from django.urls import path, re_path, include
+from app01 import views as v1
+from app02 import views as v2
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('timer/', timer),
+    path('timer/', v1.timer),
+    path('', v2.index),
+    # 正则匹配
+    # re_path('^article/(\d{4})$', v1.article),  # 一定要分组
+    # re_path('^article/(\d{4})/(\d{1,2})$', v1.article_month)
+    # 有名分组
+    # re_path('^article/(?P<year>\d{4})/(?P<month>\d{1,2})$', v1.article_month)
+    # 路由分发
+    re_path("^article/", include("article.urls"))
 ]
