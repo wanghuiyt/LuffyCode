@@ -28,6 +28,7 @@ scrapy = {version = "*", index = "pypitunatsinghuaedu"}
 twisted = "*"
 cryptography = "==36.0.2"
 pillow = "*"
+django = "*"
 
 [dev-packages]
 

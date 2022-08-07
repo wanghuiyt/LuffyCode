@@ -1,4 +1,4 @@
-# Scrapy settings for zhong project
+# Scrapy settings for zhipin project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,29 +7,15 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'zhong'
+BOT_NAME = 'zhipin'
 
-SPIDER_MODULES = ['zhong.spiders']
-NEWSPIDER_MODULE = 'zhong.spiders'
+SPIDER_MODULES = ['zhipin.spiders']
+NEWSPIDER_MODULE = 'zhipin.spiders'
 
 LOG_LEVEL = "WARNING"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'zhong (+http://www.yourdomain.com)'
-
-#http://useragentstring.com/pages/useragentstring.php?name=chrome
-User_Agents = [
-   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36",
-   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36",
-   "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36",
-   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2866.71 Safari/537.36",
-   "Mozilla/5.0 (X11; Ubuntu; Linux i686 on x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2820.59 Safari/537.36",
-]
-
-Proxies = [
-   "192.168.1.1",
-   "192.168.1.2",
-]
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -60,16 +46,13 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'zhong.middlewares.ZhongSpiderMiddleware': 543,
+#    'zhipin.middlewares.ZhipinSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   # 'zhong.middlewares.ZhongDownloaderMiddleware': 543,
-   # 'zhong.middlewares.ZhongDownloaderMiddleware_1': 997,
-   # 'zhong.middlewares.ZhongDownloaderMiddleware_2': 998,
-   'zhong.middlewares.ZhongDownloaderMiddleware_3': 300,
+   'zhipin.middlewares.ZhipinDownloaderMiddleware': 543,
 }
 
 # Enable or disable extensions
@@ -81,7 +64,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'zhong.pipelines.ZhongPipeline': 300,
+#    'zhipin.pipelines.ZhipinPipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
