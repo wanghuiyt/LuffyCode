@@ -17,6 +17,8 @@
       <sourceFolder url="file://$MODULE_DIR$/四期直播/14.全站数据抓取 CrawlSpider/che" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/四期直播/14.全站数据抓取 CrawlSpider/che2" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/四期直播/14.全站数据抓取 CrawlSpider/shi" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/四期直播/15.分布式 增量爬虫/tianya" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/四期直播/15.分布式 增量爬虫/tianya2" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/7.多线程和多进程/img" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密前" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密后" />

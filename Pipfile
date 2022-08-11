@@ -29,6 +29,7 @@ twisted = "*"
 cryptography = "==36.0.2"
 pillow = "*"
 django = "*"
+scrapy-redis = "*"
 
 [dev-packages]
 
