@@ -11,4 +11,6 @@ def index(request: WSGIRequest):
     # 请求数据
     print(request.GET)
     print(request.POST)
+    # 请求体原数据
+    print(request.body)
     return HttpResponse("OK")

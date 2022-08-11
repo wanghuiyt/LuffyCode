@@ -31,3 +31,7 @@ class Ty2Spider(RedisSpider):
         content = content.strip()
         print(content)
         yield {"content": content}
+
+    # 程序启动的时候，可以直接从redis走
+    # 访问第一个url=》一堆详情页的url=》进入redis list做队列
+    # 成功的请求到详情页的url数据处理完毕之后，可以从redis中删除掉该url

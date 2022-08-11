@@ -55,6 +55,12 @@ class TySpider(scrapy.Spider):
         if int(resp.meta["page"]) <= 3:
             yield scrapy.Request(url=hh, callback=self.parse, meta={"page": 变量})
         """
+        page = resp.meta.get("page", 1)
+        if int(page) < 5:
+            page += 1
+            hrefs = resp.xpath('//div[@class="short-pages-2 clearfix"]//a/@href').extract()
+            href = resp.urljoin(hrefs[-1])
+            yield scrapy.Request(url=href, callback=self.parse, meta={"page": page})
 
     def parse_detail(self, resp: HtmlResponse, **kwargs):
         contents = resp.xpath('//div[@class="bbs-content clearfix"]//text()').extract()
@@ -62,8 +68,8 @@ class TySpider(scrapy.Spider):
         content = content.strip()
 
         # url去重
-        # href = resp.meta["href"]  # 一定要手工传递过来，防止重定向发生
-        # self.redis.sadd("ty:urls", href)
+        href = resp.meta["href"]  # 一定要手工传递过来，防止重定向发生
+        self.redis.sadd("ty:urls", href)
 
         # 数据去重
         yield {"content": content}
