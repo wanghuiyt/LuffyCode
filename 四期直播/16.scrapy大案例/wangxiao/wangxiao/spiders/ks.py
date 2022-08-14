@@ -137,7 +137,56 @@ class KsSpider(scrapy.Spider):
         file_name = resp.meta["file_name"]
         # json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
         # 本次请求拿到的东西不是json
-        print(resp.text)
+        dic = resp.json()
+        data_list = dic["Data"]
+        for data in data_list:
+            questions = data.get("questions")
+            if questions:
+                for question in questions:
+                    question_info = self.parse_questions(question)
+                    yield {
+                        "dir_path": dir_path,
+                        "file_name": file_name,
+                        "question_info": question_info
+                    }
+            else:
+                materials = data.get("materials")
+                for mater in materials:
+                    mater_content = mater["materials"]["content"]
+                    questions = mater["questions"]
+                    qs = []
+                    for q in questions:
+                        q_info = self.parse_questions(q)
+                        qs.append(q_info)
+                    question_info = mater_content + "\n\n" + "\n".join(qs)
+                    yield {
+                        "dir_path": dir_path,
+                        "file_name": file_name,
+                        "question_info": question_info
+                    }
+
+    def process_question(self, question):
+        content = question["content"]
+        options = question["options"]
+        right_list = []
+        opt_list = []
+        for opt in options:
+            opt_name = opt["name"]
+            opt_content = opt["content"]
+            opt_str = f"{opt_name}.{opt_content}"
+            opt_list.append(opt_str)
+            is_right = opt['isRight']
+            if is_right == 1:
+                if opt_name in "ABCDEFGH":
+                    right_list.append(opt_name)
+                else:
+                    right_list.append(opt_content)
+        analysis = question["textAnalysis"]
+        if opt_list:
+            question_info = content + "\n" + "\n".join(opt_list) + "\n\n" + "答案：" + ",".join(right_list) + "\n\n" + "解析：" + analysis
+        else:
+            question_info = content + "\n\n" + "解析：" + analysis
+        return question_info
 
 """
 requests
