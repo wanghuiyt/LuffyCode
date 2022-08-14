@@ -57,10 +57,11 @@ class TySpider(scrapy.Spider):
         """
         page = resp.meta.get("page", 1)
         if int(page) < 5:
-            page += 1
-            hrefs = resp.xpath('//div[@class="short-pages-2 clearfix"]//a/@href').extract()
-            href = resp.urljoin(hrefs[-1])
-            yield scrapy.Request(url=href, callback=self.parse, meta={"page": page})
+            # hrefs = resp.xpath('//div[@class="short-pages-2 clearfix"]//a/@href').extract()
+            # href = resp.urljoin(hrefs[-1])
+            href = resp.xpath('//div[@class="short-pages-2 clearfix"]//a[last()]/@href').extract_first()
+            href = resp.urljoin(href)
+            yield scrapy.Request(url=href, callback=self.parse, meta={"page": page + 1})
 
     def parse_detail(self, resp: HtmlResponse, **kwargs):
         contents = resp.xpath('//div[@class="bbs-content clearfix"]//text()').extract()
