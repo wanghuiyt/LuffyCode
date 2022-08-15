@@ -143,7 +143,7 @@ class KsSpider(scrapy.Spider):
             questions = data.get("questions")
             if questions:
                 for question in questions:
-                    question_info = self.parse_questions(question)
+                    question_info = self.process_question(question)
                     yield {
                         "dir_path": dir_path,
                         "file_name": file_name,
@@ -156,7 +156,7 @@ class KsSpider(scrapy.Spider):
                     questions = mater["questions"]
                     qs = []
                     for q in questions:
-                        q_info = self.parse_questions(q)
+                        q_info = self.process_question(q)
                         qs.append(q_info)
                     question_info = mater_content + "\n\n" + "\n".join(qs)
                     yield {

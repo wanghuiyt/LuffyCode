@@ -64,9 +64,12 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'wangxiao.pipelines.WangxiaoPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'wangxiao.pipelines.WangxiaoPipeline': 300,
+   'wangxiao.pipelines.WangxiaoImagePipeline': 299,
+}
+# 给出一个当前文件夹作为路径
+IMAGES_STORE = "./"
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
