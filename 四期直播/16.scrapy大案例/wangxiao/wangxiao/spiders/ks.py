@@ -46,10 +46,10 @@ class KsSpider(scrapy.Spider):
                 meta={
                     "first_title": resp.meta.get("first_title"),
                     "second_title": resp.meta.get("second_title"),
-                    "third_title": third_title,
+                    "third_title": third_title.strip().replace("\t", "").replace("/", "\/"),
                 }
             )
-            break  # return 这里都可以
+            # break  # return 这里都可以
 
     def parse_third(self, resp: HtmlResponse, **kwargs):
         first_title = resp.meta.get("first_title")
@@ -67,11 +67,11 @@ class KsSpider(scrapy.Spider):
                     points = point_item.xpath('./ancestor::ul[@class="chapter-item" or @class="section-item"]')
                     r = [first_title, second_title, third_title]
                     for point in points:
-                        p_name = "".join(point.xpath("./li[1]/text()").extract()).strip().replace(" ", "")  # 文字信息
+                        p_name = "".join(point.xpath("./li[1]/text()").extract()).strip().replace(" ", "").replace("\t", "").replace("/", "\/")  # 文字信息
                         r.append(p_name)
                     dir_path = "/".join(r)
                     # 文件名字
-                    file_name = "".join(point_item.xpath("./li[1]/text()").extract()).strip().replace(" ", "")
+                    file_name = "".join(point_item.xpath("./li[1]/text()").extract()).strip().replace(" ", "").replace("\t", "").replace("/", "\/")
                     # print(dir_path, file_name)
                     top = point_item.xpath('./li[2]/text()').extract_first().split("/")[1]
                     sign = point_item.xpath('./li[3]/span/@data_sign').extract_first()
@@ -99,11 +99,11 @@ class KsSpider(scrapy.Spider):
                             "file_name": file_name
                         }
                     )
-                    return  # 为了测试
+                    # return  # 为了测试
             else:
                 # 文件名字
                 dir_path = "/".join([first_title, second_title, third_title])
-                file_name = "".join(chapter.xpath("./li[1]/text()").extract()).strip().replace(" ", "")
+                file_name = "".join(chapter.xpath("./li[1]/text()").extract()).strip().replace(" ", "").replace("\t", "").replace("/", "\/")
                 # print(dir_path, file_name)
                 top = chapter.xpath('./li[2]/text()').extract_first().split("/")[1]
                 sign = chapter.xpath('./li[3]/span/@data_sign').extract_first()
@@ -152,7 +152,7 @@ class KsSpider(scrapy.Spider):
             else:
                 materials = data.get("materials")
                 for mater in materials:
-                    mater_content = mater["materials"]["content"]
+                    mater_content = mater["material"]["content"]
                     questions = mater["questions"]
                     qs = []
                     for q in questions:
