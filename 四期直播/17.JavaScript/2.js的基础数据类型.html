@@ -6,11 +6,32 @@
     <script>
         // var name = "alex";
         // console.log(name);
-        var name,age,haha,hehe = "haha";
-        console.log(name);
-        console.log(age);
-        console.log(hehe);
-        console.log(typeof(name));
+        // var name,age,haha,hehe = "haha";
+        // console.log(name);
+        // console.log(age);
+        // console.log(hehe);
+        // console.log(typeof(name));
+        // var wf = {
+        //     name: "wf"
+        // };
+        // wf.child = [];
+        // console.log(wf);
+
+        // function fn(){
+        //     console.log(name);  // undefined ,提前声明name(var name;)，这种现象叫变量提升
+        //     // var name = "alex";
+        //     let name = "alex";  // let声明的变量，没有变量提升
+        // }
+        // fn();
+
+        // var 声明的变量会自动进入到window中
+        // let 则不会，因为它有作用域
+        (function(){
+            let hahaha = "alex";
+            window.hahaha = hahaha;
+        })()
+        // 局部变量，在外面是不可以使用的
+        console.log(hahaha);
     </script>
 </head>
 <body>
