@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/axios.min.js"></script>
+    <script>
+        // axios拦截器 -> 中间件
+        // 在请求发送给服务器之前，拦截下来，执行一段代码
+        // 响应返回之后，运行一段代码
+        axios.interceptors.request.use(function (request){
+            console.log(request);  // 请求对象
+            let url = request.url;
+            let data = request.data;
+            url += "?hehe=123"
+            request.url = url;
+            return request;  // 把请求对象向后传递
+        }, function (error){
+            return Promise.reject(error);  // 自动运行后面的catch
+        })
+
+        axios.interceptors.response.use(function (resp){
+            // console.log(resp);
+            let data = resp.data;
+            return resp;
+        }, function (error){
+            return Promise.reject(error);
+        })
+
+        window.onload = function (){
+            let btn = document.querySelector("#btn");
+            // btn.addEventListener("click", function (){
+            //     axios.get("/haha").then(function (resp){
+            //         console.log(resp);
+            //         console.log(resp.data);
+            //     });
+            // })
+            btn.addEventListener("click", function (){
+                // 传参会进入到Request Payload
+                axios.post("/haha", {name: "123", age: 13}).then(function (resp){
+                    // console.log(resp);
+                    console.log(resp.data);
+                });
+            })
+        }
+    </script>
+</head>
+<body>
+    <h1>我是一个完美的页面</h1>
+    <span>{{name}}</span>
+    <span>{{age}}</span>
+    <input type="button" value="点我试试" id="btn">
+</body>
+</html>
