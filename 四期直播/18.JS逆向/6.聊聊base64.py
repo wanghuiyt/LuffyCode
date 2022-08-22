@@ -10,8 +10,8 @@ s = "我爱你"
 bs = s.encode("utf-8")
 print(bs)
 # 转成成base64字符串
-b64_str = base64.b64encode(bs)
-b64_str = b64_str.decode()  # 这里是Unicode编码，不需要encoding
+b64_str = base64.b64encode(bs).decode()
+# b64_str = b64_str.decode()  # 这里是Unicode编码，不需要encoding
 print(b64_str)
 
 # 如果有了b64字符串，还原字节

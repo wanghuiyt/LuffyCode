@@ -1,6 +1,7 @@
 from urllib.parse import urlencode, quote, unquote
 
 # 把数据转化成 urlencode => 处理的是字典
+# 只有在cookie的内容是你自己计算的时候
 dic = {
     "name": "周杰伦=昆凌",
     "age": 18
