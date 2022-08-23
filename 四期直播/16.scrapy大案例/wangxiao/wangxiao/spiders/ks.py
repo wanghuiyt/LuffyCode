@@ -76,7 +76,7 @@ class KsSpider(scrapy.Spider):
                     top = point_item.xpath('./li[2]/text()').extract_first().split("/")[1]
                     sign = point_item.xpath('./li[3]/span/@data_sign').extract_first()
                     subSign = point_item.xpath('./li[3]/span/@data_subsign').extract_first()
-                    data ={
+                    data = {
                         "examPointType": "",
                         "practiceType": "2",
                         "questionType": "",

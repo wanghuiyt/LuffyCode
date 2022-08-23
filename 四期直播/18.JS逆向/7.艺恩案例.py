@@ -6,10 +6,9 @@ ob混淆：
     AST（入门难度极高）
 """
 
-# 把16进制字符串变成字节，把字节变成16进制字符串
 import json
 import requests
-import binascii
+import binascii  # 把16进制字符串变成字节，把字节变成16进制字符串
 from Crypto.Cipher import DES
 
 def func(a, b, c):
