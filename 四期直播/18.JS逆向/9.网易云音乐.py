@@ -1,3 +1,4 @@
+import binascii
 import json
 import base64
 import requests
@@ -16,7 +17,16 @@ def b(data, key):
 
 # 暂时不管这个rsa加密
 def c(i, e, f):
-    return "d6cf71ac77cd9f94cc877657b5cee28488e4efc26ca5a22c2b8cc01b6ec9ad0fe8dc65e510ad40386551e2db64660de8c21ccd0bba08304f24bf5fd92336c2fe6492f0e7f043c23a9050c4caedef490ecf48491557bfe438947d939531ee91218b04ea1593424da35daccbf39667a62f65766ff9272f81d89d7bf684cf083643"
+    i = i[::-1]  # 从后往前加密
+    e = int(e, 16)
+    f = int(f, 16)
+    bs = i.encode("utf-8")
+    s = binascii.b2a_hex(bs).decode()
+    s = int(s, 16)
+    # 全是数字
+    mi = (s**e) % f
+    return format(mi, "x")  # 转成十六进制数
+    # return "d6cf71ac77cd9f94cc877657b5cee28488e4efc26ca5a22c2b8cc01b6ec9ad0fe8dc65e510ad40386551e2db64660de8c21ccd0bba08304f24bf5fd92336c2fe6492f0e7f043c23a9050c4caedef490ecf48491557bfe438947d939531ee91218b04ea1593424da35daccbf39667a62f65766ff9272f81d89d7bf684cf083643"
 
 def asrsea(data, e, f, g):
     i = "Y5oLbwFDuYI9MCws"
