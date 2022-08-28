@@ -10,7 +10,6 @@ name = "pypitunatsinghuaedu"
 
 [packages]
 faker = "*"
-requests = "*"
 flask = "*"
 wtforms = "*"
 bs4 = "*"
@@ -31,6 +30,8 @@ pillow = "*"
 django = "*"
 scrapy-redis = "*"
 pyexecjs = "*"
+requests = "==2.19.1"
+certifi = "==2018.8.13"
 
 [dev-packages]
 
