@@ -1,0 +1,74 @@
+e = this.splitDate()
+    t = new Date(Date.now())
+    t = t.getTime();
+
+t = Object(f.b)(e.millisecond)
+function(e) {
+        return Math.ceil(e).toString(16).toUpperCase()  # 向上取整，变成16进制字符串，再变成大写
+
+# contact: 拼接
+t = "".concat(Object(f.c)(8), "_").concat(t)
+
+# f.c(8)
+function(e) {
+        for (var t = "", n = 0; n < e; n++)
+            t += o(16 * Math.random());
+        return s(t, e)
+    }
+
+o = function(e) {
+        return Math.ceil(e).toString(16).toUpperCase()
+    }
+s = function(e, t) {
+        var n = "";
+        if (e.length < t)
+            for (var r = 0; r < t - e.length; r++)
+                n += "0";
+        return n + e
+    }
+c.a.setCookie("b_lsid", t, 0, "current-domain")
+
+this._uuid = Object(f.a)()
+
+function() {
+        var e = a(8)
+          , t = a(4)
+          , n = a(4)
+          , r = a(4)
+          , o = a(12)
+          , i = (new Date).getTime();
+        return e + "-" + t + "-" + n + "-" + r + "-" + o + s((i % 1e5).toString(), 5) + "infoc"
+    }
+      , a = function(e) {
+        for (var t = "", n = 0; n < e; n++)
+            t += o(16 * Math.random());
+        return s(t, e)
+    }
+      , s = function(e, t) {
+        var n = "";
+        if (e.length < t)
+            for (var r = 0; r < t - e.length; r++)
+                n += "0";
+        return n + e
+    }
+      , o = function(e) {
+        return Math.ceil(e).toString(16).toUpperCase()
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
