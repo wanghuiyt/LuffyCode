@@ -29,4 +29,12 @@ print(data_list)
 res = data_list.decode("utf-8")
 print(res)
 
+# 另一种写法
+byte_list = [-26, -83, -90, -26, -78, -101, -23, -67, -112]
+data_list = []
+for item in byte_list:
+    item = item & 0xff  # item<0时，让item+256
+    ele = "%02x" % item
+    data_list.append(ele)
+print("".join(data_list))
 
