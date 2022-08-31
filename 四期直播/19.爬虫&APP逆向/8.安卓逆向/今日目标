@@ -1,0 +1,20 @@
+## 安卓开发：网络请求
+    --Java基础，看得懂Java
+    --安卓程序，安卓的特点
+    --JNI开发，涉及C语言
+```java
+1.发送网络请求时，用于构造请求体（对象的内部包含了所有的请求体相关的数据）
+2.最终发送数据时，user=xxx&pwd=xxx&sign=xxx
+FormBody form = new FormBody.Builder()
+        .add("user", dataMap.get("username"))
+        .add("pwd", dataMap.get("password"))
+        .add("sign", dataMap.get("sign")).build();
+```
+## 今日遇到的坑
+Charles 的代理ip端口变了，导致手机和虚拟器的网络ip设置代理后无法访问网络
+手机设置代理ip后，电脑上要允许连接
+
+## 逆向案例：油联合伙人
+
+## 代码开发规范
+
