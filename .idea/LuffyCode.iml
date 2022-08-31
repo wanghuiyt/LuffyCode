@@ -20,6 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/四期直播/15.分布式 增量爬虫/tianya" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/四期直播/15.分布式 增量爬虫/tianya2" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/四期直播/16.scrapy大案例/wangxiao" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/实战课/Django/深入浅出学Django/Muban" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/7.多线程和多进程/img" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密前" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密后" />
@@ -27,5 +28,8 @@
     <orderEntry type="jdk" jdkName="Pipenv (LuffyCode)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="mysite" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_CONFIGURATION" value="Django" />
   </component>
 </module>

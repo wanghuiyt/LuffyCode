@@ -1,30 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h3>深度查询 句点符 .</h3>
-<p>用户名：{{ name }}</p>
-<p>四大名著：{{ books }}</p>
-<p>四大名著第一本：{{ books.0 }}</p>
-<p>四大名著第二本：{{ books.1 }}</p>
-<p>四大名著第三本：{{ books.2 }}</p>
-<p>四大名著第四本：{{ books.3 }}</p>
-<p>info：{{ info }}</p>
-<p>name：{{ info.name }}</p>
-<p>age：{{ info.age }}</p>
-<p>stu：{{ stu }}</p>
-<p>name：{{ stu.name }}</p>
-<p>age：{{ stu.age }}</p>
-<h3>过滤器语法</h3>
-{#{{ 变量 | 过滤器函数:过滤器参数 }}#}
-{#过滤器参数与前面：不能有空格#}
-<p>四大名著第一本书：{{ books | first }}</p>
-<p>当前时间：{{ now | date:"Y/m/d H:i:s" }}</p>
-<p>age: {{ age | add:1 }}</p>
-<p>filesize: {{ filesize | filesizeformat }}</p>
-<p>{{ link | safe }}</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block css %}
+    .active {
+        color: red;
+    }
+
+    .bookbg {
+        background: red;
+    }
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>序号</th>
+            <th>ID</th>
+            <th>书籍名称</th>
+            <th>价格</th>
+        </tr>
+        {% for book in book_list %}
+            {% if book.price > 300 %}
+                <tr class="bookbg">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.price }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.price }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block title %}
+    <title>首页</title>
+{% endblock %}
+
