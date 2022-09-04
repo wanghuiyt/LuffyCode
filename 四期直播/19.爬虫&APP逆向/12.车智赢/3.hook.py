@@ -24,9 +24,9 @@ Java.perform(function () {
     
     // MD5，Hook，替换
     SecurityUtil.encodeMD5.implementation = function(str){
-        console.loe("明文=",str);
+        console.log("明文=",str);
         var res = this.encodeMD5(str);
-        console.loe("密文=",res);
+        console.log("密文=",res);
         return res;
     }
 });
