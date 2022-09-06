@@ -1,27 +1,26 @@
 import uuid
 import random
 import base64
-from typing import Callable, Any
-
 import requests
 from hashlib import md5
 from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad
 
 
 def des3(data_string):
-    BS = 8
-    pad: Callable[[Any], Any] = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+    # BS = 8
+    # pad: Callable[[Any], Any] = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+    # plaintext = pad(data_string).encode("utf-8")
 
     # 3DES的MODE_CBC模式下只有前24位有意义
     key = b'appapiche168comappapiche168comap'[0:24]
     iv = b'appapich'
-    plaintext = pad(data_string).encode("utf-8")
+    plaintext = pad(data_string.encode("utf-8"), 8)
 
     # 使用MODE_CBC创建cipher
     cipher = DES3.new(key=key, mode=DES3.MODE_CBC, IV=iv)
     result = cipher.encrypt(plaintext)
-    res = base64.b64encode(result).decode("utf-8")
-    return res
+    return base64.b64encode(result).decode("utf-8")
 
 
 def md5_encrypt(data_string):
@@ -31,18 +30,15 @@ def md5_encrypt(data_string):
 
 
 def run():
-    username = "18877765431"
-    password = "123123"
+    username = "13146372546"
+    password = "123456"
 
     imei = str(uuid.uuid4())
     nano_time = random.randint(4191649692556, 7136066335773)
     device_id = ""
     udid = des3(f"{imei}|{nano_time}|{device_id}")
-    u_list = list(udid)
-    u_list.insert(len(u_list) - 28, " ")
-    udid = "".join(u_list)
 
-    security = "W@oCIAH_6Ew1f6%8"
+    security = "W@oC!AH_6Ew1f6%8"
 
     data_dict = {
         "_appid": "atc.android",
