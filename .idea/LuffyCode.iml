@@ -40,7 +40,7 @@
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密前" />
       <excludeFolder url="file://$MODULE_DIR$/四期直播/8.协程/解密后" />
     </content>
-    <orderEntry type="jdk" jdkName="Pipenv (LuffyCode)" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="mysite" />
   </component>

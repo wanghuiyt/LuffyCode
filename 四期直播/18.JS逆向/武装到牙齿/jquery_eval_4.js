@@ -32,8 +32,7 @@ function txsdefwsw() {
     try {
         var a = 'debugger';
         !function c(r) {
-            function () {
-            }.constructor(a)(), c(++r)
+            (function () {}).constructor(a)(), c(++r)
         }(0)
     } catch (a) {
         setTimeout(txsdefwsw, 100)

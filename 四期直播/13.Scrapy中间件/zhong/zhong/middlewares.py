@@ -143,7 +143,7 @@ class ZhongDownloaderMiddleware:
         pass
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        self.info = spider.logger.info('Spider opened: %s' % spider.name)
 
 
 class ZhongDownloaderMiddleware_1:
