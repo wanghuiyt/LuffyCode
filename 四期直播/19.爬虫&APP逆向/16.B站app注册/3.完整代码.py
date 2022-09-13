@@ -1,4 +1,5 @@
 import re
+import copy
 import time
 import json
 import string
@@ -16,7 +17,9 @@ from geetest.v3.gee import do_geetest
 
 class Bilibili(object):
 
-    def __init__(self):
+    def __init__(self, region, mobile, card_url):
+        self.region, self.mobile, self.card_url = region, mobile, card_url
+
         self.cookie_info = None
         self.token_info = None
         self.code = None
@@ -346,17 +349,17 @@ class Bilibili(object):
         data_dict = resp.json()
         self.guest_id = str(data_dict["data"]["guest_id"])
 
-    def step_send_sms(self, region, mobile):
+    def step_send_sms(self):
         form_dict = {
             "appkey": "bca7e84c2d947ac6",
             "build": "6240300",
             "c_locale": "zh_CN",
             "channel": "xxl_gdt_wm_253",
-            "cid": region,
+            "cid": self.region,
             "mobi_app": "android",
             "platform": "android",
             "s_locale": "zh_CN",
-            "tel": mobile,
+            "tel": self.mobile,
             "ts": int(time.time()),
         }
 
@@ -385,13 +388,13 @@ class Bilibili(object):
         data_dict = {item.split("=")[0]: item.split("=")[1] for item in v1.query.split("&")}
         return True, data_dict
 
-    def step_send_sms_geetest(self, region, mobile, gee_challenge, gee_validate, recaptcha_token):
+    def step_send_sms_geetest(self, gee_challenge, gee_validate, recaptcha_token):
         data_dict = {
             "appkey": "bca7e84c2d947ac6",
             "build": "6240300",
             "c_locale": "zh_CN",
             "channel": "xxl_gdt_wm_253",
-            "cid": region,  # 1 86
+            "cid": self.region,  # 1 86
             "gee_challenge": gee_challenge,
             "gee_seccode": "{}%7Cjordan".format(gee_validate),
             "gee_validate": gee_validate,
@@ -399,7 +402,7 @@ class Bilibili(object):
             "platform": "android",
             "recaptcha_token": recaptcha_token,
             "s_locale": "zh_CN",
-            "tel": mobile,
+            "tel": self.mobile,
             "ts": int(time.time()),
         }
         body_string = self.get_param_sign_so(data_dict)
@@ -427,7 +430,7 @@ class Bilibili(object):
         self.is_new = data_dict['data']['is_new']
         return True
 
-    def step_login_sms(self, region, code, mobile):
+    def step_login_sms(self, code):
         fingerprint_dict = {
             "aaid": "",
             "accessibility_service": "[\"com.android.settings/.accessibility.accessibilitymenu.AccessibilityMenuService\", \"com.google.android.marvin.talkback/.TalkBackService\", \"com.google.android.marvin.talkback/com.google.android.accessibility.accessibilitymenu.AccessibilityMenuService\", \"com.google.android.marvin.talkback/com.google.android.accessibility.selecttospeak.SelectToSpeakService\", \"com.google.android.marvin.talkback/com.android.switchaccess.SwitchAccessService\", \"com.miui.accessibility/.environment.sound.recognition.EnvSoundRecognitionService\", \"com.miui.accessibility/.voiceaccess.VoiceAccessAccessibilityService\", \"com.miui.accessibility/.haptic.HapticAccessibilityService\", \"com.miui.personalassistant/com.miui.voicesdk.VoiceAccessibilityService\", \"com.miui.securitycenter/com.miui.gamebooster.gbservices.AntiMsgAccessibilityService\", \"com.miui.securitycenter/com.miui.luckymoney.service.LuckyMoneyAccessibilityService\", \"com.miui.voiceassist/.accessibility.VoiceAccessibilityService\", \"com.sohu.inputmethod.sogou.xiaomi/com.sohu.inputmethod.flx.quicktype.QuickAccessibilityService\", \"com.xiaomi.gamecenter.sdk.service/com.xiaomi.gamecenter.sdk.ui.mifloat.process.DetectService\", \"bin.mt.plus/l.ۨۘۗ\", \"com.baidu.input_mi/com.baidu.acs.service.AcsService\", \"com.iflytek.inputmethod.miui/com.iflytek.libaccessibility.mi.FlyIMEAccessibilityService\", \"com.xiaomi.scanner/.qrcodeautoprocessing.MyAccessibilityService\"]",
@@ -501,7 +504,7 @@ class Bilibili(object):
             "c_locale": "zh_CN",
             'captcha_key': self.captcha_key,
             "channel": "xxl_gdt_wm_253",
-            "cid": region,
+            "cid": self.region,
             "code": code,
             "device": 'phone',
             'device_id': self.fp_remote,
@@ -515,7 +518,7 @@ class Bilibili(object):
             "mobi_app": "android",
             "platform": "android",
             "s_locale": "zh_CN",
-            "tel": mobile,
+            "tel": self.mobile,
             "ts": int(time.time()),
         }
         body_string = self.get_param_sign_so(body)
@@ -624,7 +627,7 @@ def run():
     region = "1"
     mobile = "5813346141"
 
-    bili = Bilibili()
+    bili = Bilibili(region, mobile, card_dict[mobile])
 
     # 获取公钥
     bili.step_web_key()
@@ -633,7 +636,7 @@ def run():
     bili.step_passport_guest_reg_5()
 
     # 发送短信
-    need_geetest, gee_dict = bili.step_send_sms(region, mobile)
+    need_geetest, gee_dict = bili.step_send_sms()
     print("正常发送短信=>", gee_dict)
 
     if gee_dict.get("code") == 86200:
@@ -651,7 +654,7 @@ def run():
         gee_validate = gee_res_dict['validate']
 
         # 还需要再次发送短信
-        status = bili.step_send_sms_geetest(region, mobile, gee_challenge, gee_validate, recaptcha_token)
+        status = bili.step_send_sms_geetest(gee_challenge, gee_validate, recaptcha_token)
         print(status)
 
     # 重新获取hash值
@@ -662,9 +665,16 @@ def run():
     print("验证码=>", sms_code)
     # sms_code = input(">>>")
 
-    bili.step_login_sms(region, sms_code, mobile)
+    bili.step_login_sms(sms_code)
     if bili.is_new:
         bili.step_oauth_access_token()
+
+    info_dict = copy.deepcopy(bili.__dict__)
+    del info_dict["session"]
+    del info_dict["ts"]
+
+    with open(f"{mobile}.txt", mode="w", encoding="utf-8") as f:
+        json.dump(info_dict, f)
 
 
 if __name__ == '__main__':
