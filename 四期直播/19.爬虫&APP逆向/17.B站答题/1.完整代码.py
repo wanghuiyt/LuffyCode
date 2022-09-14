@@ -9,6 +9,9 @@ import requests
 
 class Bilibili(object):
     def __init__(self, file_path):
+        self.cookie_dict = None
+        self.answer_list = None
+        self.question_id = None
         self.file_path = file_path
         self.region, self.mobile, self.card_url = None, None, None
 
