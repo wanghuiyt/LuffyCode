@@ -1,17 +1,10 @@
-import re
-import copy
-import time
 import json
-import string
-import random
-import base64
+import time
+from hashlib import md5
+from urllib.parse import quote_plus
+
+import ddddocr
 import requests
-from datetime import datetime
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import AES, PKCS1_v1_5
-from Crypto.Util.Padding import pad
-from urllib.parse import quote_plus, urlsplit, quote
-from hashlib import md5, sha256, sha1
 
 
 class Bilibili(object):
@@ -48,22 +41,8 @@ class Bilibili(object):
         self.session = requests.session()
         self.session.proxies = self.get_proxy_dict()
 
-    def initialize(self):
-        with open(self.file_path, mode="r", encoding="utf-8") as f:
-            data_dict = json.load(f)
-        for k, v in data_dict.items():
-            setattr(self, k, v)
-
     @staticmethod
     def get_proxy_dict():
-        # key = "tps150.kdlapi.com:15818"
-        # passwd = "t12678079599196"
-        # host = "gbtn0lkl"
-        # return {
-        #     "http": 'http://{}:{}@{}'.format(key, passwd, host),
-        #     "https": 'https://{}:{}@{}'.format(key, passwd, host)
-        # }
-
         key = "9CEF198A"  # 用户key
         passwd = "3FD919941B70"  # 用户密码
 
@@ -79,59 +58,12 @@ class Bilibili(object):
         proxy = 'http://{}:{}@{}'.format(key, passwd, host)
         return {"http": proxy, "https": proxy}
 
-    @staticmethod
-    def md5_encrypt(data_string, isBytes=False):
-        obj = md5()
-        obj.update(data_string.encode("utf-8"))
-        if isBytes:
-            return obj.digest()
-        return obj.hexdigest()
-
-    @staticmethod
-    def sha256_encrypt(data_string):
-        SALT = "9cafa6466a028bfb"
-        sha = sha256()
-        sha.update(data_string.encode("utf-8"))
-        sha.update(SALT.encode("utf-8"))
-        return sha.hexdigest()
-
-    @staticmethod
-    def sha1_encrypt(data_string):
-        obj = sha1()
-        obj.update(data_string.encode("utf-8"))
-        return obj.hexdigest()
-
-    @staticmethod
-    def aes_encrypt(data_string, key, iv):
-        aes = AES.new(
-            key=key.encode("utf-8"),
-            mode=AES.MODE_CBC,
-            iv=iv.encode("utf-8")
-        )
-        raw = pad(data_string.encode("utf-8"), 16)
-        encrypt_bytes = aes.encrypt(raw)
-        hex_string = "".join(["%02x" % b for b in encrypt_bytes])
-        return hex_string
-
-    @staticmethod
-    def base64_encrypt(data_string):
-        data_bytes = bytearray(data_string.encode('utf-8'))
-        data_bytes[0] = data_bytes[0] ^ (len(data_bytes) & 0xFF)
-        for i in range(1, len(data_bytes)):
-            data_bytes[i] = (data_bytes[i - 1] ^ data_bytes[i]) & 0xFF
-        res = base64.encodebytes(bytes(data_bytes))
-        return res.strip().strip(b"==").decode('utf-8')
-
-    def rsa_encrypt(self, data_string):
-        """
-        使用RSA公钥加密
-        :param data_string:
-        :return:
-        """
-        key = RSA.importKey(self.rsa_pub_key)
-        cipher = PKCS1_v1_5.new(key)
-        ciphertext = base64.b64encode(cipher.encrypt(bytes(data_string, "utf-8")))
-        return ciphertext
+    def initialize(self):
+        with open(self.file_path, mode="r", encoding="utf-8") as f:
+            data_dict = json.load(f)
+        for k, v in data_dict.items():
+            setattr(self, k, v)
+        self.cookie_dict = {item["name"]: item["value"] for item in self.cookie_info["cookies"]}
 
     def get_param_sign_s(self, param_dict):
         """
@@ -168,9 +100,263 @@ class Bilibili(object):
             "mobi_app": "android",
             "platform": "android",
             "re_src": "0",
-            "statistics": quote_plus(json.dumps({"appId": 1, "platform": 3, "version": "6.24.0", "abtest": ""}, separators=(",", ":"))),
+            "statistics": quote_plus(
+                json.dumps({"appId": 1, "platform": 3, "version": "6.24.0", "abtest": ""}, separators=(",", ":"))),
             "ts": int(time.time()),
         }
+        param_string = self.get_param_sign_so(data_dict)
+
+        resp = self.session.get(
+            url="https://api.bilibili.com/x/answer/v4/status?{}".format(param_string.encode('utf-8')),
+            headers={
+                "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                "buvid": self.buvid,
+                "referer": "https://www.bilibili.com/h5/newbie/entry?spm_id=main.my-page.answer.0&navhide=1&native.theme=1",
+                "native_api_from": 'h5',
+                "content-type": "application/json"
+            },
+            cookies={item['name']: item['value'] for item in self.cookie_info['cookies']}
+        )
+        # {'hid': 1660720523461603, 'mid': 1994769663, 'score': 1, 'status': 2, 'number': 1, 'result': 'failed', 'stage': 'base', 'version': 'v4', 'start_time': 1660720523, 'first_answer': 1, 'progress': '2', 'text': '继续答题', 'url': 'https://www.bilibili.com/h5/newbie/entry?navhide=1', 'in_reg_audit': False, 'edition': 2, 'rewards': None}
+        return resp.json()
+
+    def base(self):
+        data_dict = {
+            'access_key': self.token_info['access_token'],
+            "appkey": "1d8b6e7d45233436",
+            "area": "0",
+            "build": "6240300",
+            "channel": "xxl_gdt_wm_253",
+            "image_version": "v",
+            "mobi_app": "android",
+            "platform": "h5",
+            "re_src": "0",
+            "statistics": quote_plus(
+                json.dumps({"appId": 1, "platform": 3, "version": "6.24.0", "abtest": ""}, separators=(",", ":"))),
+            "ts": int(time.time()),
+        }
+        param_string = self.get_param_sign_so(data_dict)
+        resp = self.session.get(
+            url="https://api.bilibili.com/x/answer/v4/base?{}".format(param_string),
+            headers={
+                "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                "buvid": self.buvid,
+                "referer": "https://www.bilibili.com/h5/newbie/basic-1?score=0",
+                "native_api_from": 'h5',
+                "content-type": "application/json"
+            },
+            cookies={item['name']: item['value'] for item in self.cookie_info['cookies']}
+        )
+
+        # {'question': {'id': 6649, 'number': 1, 'q_height': 76.8, 'q_coord_y': 0, 'image': 'https://i0.hdslb.com/bfs/member/729b1a328a8639555989d0c69f20ec63.png', 'from': '', 'options': [{'number': 1, 'high': 42, 'coord_y': 76.8, 'hash': '916ca6a13247748c0f134620d6f2e640'}, {'number': 2, 'high': 42, 'coord_y': 118.8, 'hash': 'ea4b4bc03737435233b0d3276e236594'}], 'type_id': 36, 'type_name': '小电视校长', 'type_image': 'https://i0.hdslb.com/bfs/face/7b67c0c0da64a6ab059ff49bb0d4b92988b91806.png'}}
+        # {'code': 41020, 'message': '用户基础题已通过', 'ttl': 1}
+        # print(res.json())
+        res_dict = resp.json()["data"]
+        print(res_dict)
+        self.question_id = res_dict["question"]["id"]
+        self.answer_list = [item["hash"] for item in res_dict["question"]["options"]]
+
+    def base_check(self):
+        for ans_hash in self.answer_list:
+            data_dict = {
+                'access_key': self.token_info['access_token'],
+                "ans_hash": ans_hash,
+                "appkey": "1d8b6e7d45233436",
+                "area": "0",
+                "build": "6240300",
+                "channel": "xxl_gdt_wm_253",
+                'csrf': self.cookie_dict["bili_jct"],
+                "mobi_app": "android",
+                "platform": "h5",
+                "question_id": self.question_id,
+                "re_src": "0",
+                "statistics": quote_plus(
+                    json.dumps({"appId": 1, "platform": 3, "version": "6.24.0", "abtest": ""}, separators=(",", ":"))),
+                "ts": int(time.time()),
+            }
+            data_string = self.get_param_sign_so(data_dict)
+            resp = self.session.get(
+                url="https://api.bilibili.com/x/answer/v4/base/check",
+                data=data_string,
+                headers={
+                    "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                    "buvid": self.buvid,
+                    'x-csrf-token': self.cookie_dict["bili_jct"],
+                    "referer": "https://www.bilibili.com/h5/newbie/basic-1?score=0",
+                    "native_api_from": 'h5',
+                    "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+                },
+                cookies=self.cookie_dict
+            )
+
+            res_dict = resp.json()
+            # print(res_dict)
+            if res_dict['data']['passed']:
+                return
+
+    def get_captcha(self):
+        data_dict = {
+            'access_key': self.token_info['access_token'],
+            "appkey": "1d8b6e7d45233436",
+            "area": "0",
+            "build": "6240300",
+            "channel": "xxl_gdt_wm_253",
+            "mobi_app": "android",
+            "platform": "android",
+            "re_src": "0",
+            "statistics": "%7B%22appId%22%3A1%2C%22platform%22%3A3%2C%22version%22%3A%226.24.0%22%2C%22abtest%22%3A%22%22%7D",
+            "ts": int(time.time()),
+        }
+
+        param_string = self.get_param_sign_so(data_dict)
+        resp = self.session.get(
+            url="https://api.bilibili.com/x/answer/v4/captcha?{}".format(param_string),
+            headers={
+                "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                "buvid": self.buvid,
+                "referer": "https://www.bilibili.com/h5/newbie/basic-1?score=0",
+                "native_api_from": 'h5',
+                "content-type": "application/json"
+            },
+            cookies={item['name']: item['value'] for item in self.cookie_info['cookies']}
+        )
+        return resp.json()['data']['token'], resp.json()['data']['url']
+
+    def get_image_code(self, url):
+        resp = self.session.get(
+            url=url,
+            headers={
+                "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                "buvid": self.buvid,
+                "referer": "https://www.bilibili.com/h5/newbie/basic-1",
+                "native_api_from": 'h5',
+                "content-type": "application/json",
+                "x-requested-with": "tv.danmaku.bili"
+            },
+            cookies={item['name']: item['value'] for item in self.cookie_info['cookies']}
+        )
+        ocr = ddddocr.DdddOcr(show_ad=False)
+        img_code = ocr.classification(resp.content).strip()
+        return img_code
+
+    def captcha_check(self, token, image_code):
+        data_dict = {
+            'access_key': self.token_info['access_token'],
+            "appkey": "1d8b6e7d45233436",
+            "area": "0",
+            "bilibili_code": image_code,
+            "bilibili_token": token,
+            "build": "6240300",
+            "channel": "xxl_gdt_wm_253",
+            'csrf': self.cookie_dict["bili_jct"],
+            'geetest_challenge': "",
+            'geetest_seccode': "",
+            'geetest_validate': "",
+            "mobi_app": "android",
+            "platform": "android",
+            "re_src": "0",
+            "statistics": quote_plus(
+                json.dumps({"appId": 1, "platform": 3, "version": "6.24.0", "abtest": ""}, separators=(",", ":"))),
+            "ts": int(time.time()),
+            'type': "bilibili",
+            'types': "",
+        }
+        data_string = self.get_param_sign_so(data_dict)
+
+        resp = self.session.get(
+            url="https://api.bilibili.com/x/answer/v4/captcha/check",
+            data=data_string,
+            headers={
+                "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                "buvid": self.buvid,
+                'x-csrf-token': self.cookie_dict["bili_jct"],
+                "referer": "https://www.bilibili.com/h5/newbie/basic-1?score=0",
+                "native_api_from": 'h5',
+                "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+            },
+            cookies=self.cookie_dict
+        )
+        res_dict = resp.json()
+        if res_dict["code"] == 0:
+            return True
+
+    def extra(self):
+        data_dict = {
+            'access_key': self.token_info['access_token'],
+            "appkey": "1d8b6e7d45233436",
+            "area": "0",
+            "build": "6240300",
+            "channel": "xxl_gdt_wm_253",
+            "image_version": "v",
+            "mobi_app": "android",
+            "platform": "h5",
+            "re_src": "0",
+            "statistics": quote_plus(
+                json.dumps({"appId": 1, "platform": 3, "version": "6.24.0", "abtest": ""}, separators=(",", ":"))),
+            "ts": int(time.time()),
+        }
+        param_string = self.get_param_sign_so(data_dict)
+        resp = self.session.get(
+            url="https://api.bilibili.com/x/answer/v4/extra?{}".format(param_string),
+            headers={
+                "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                "buvid": self.buvid,
+                "referer": "https://www.bilibili.com/h5/newbie/basic-1?score=0",
+                "native_api_from": 'h5',
+                "content-type": "application/json"
+            },
+            cookies={item['name']: item['value'] for item in self.cookie_info['cookies']}
+        )
+        # {'question': {'id': 6649, 'number': 1, 'q_height': 76.8, 'q_coord_y': 0, 'image': 'https://i0.hdslb.com/bfs/member/729b1a328a8639555989d0c69f20ec63.png', 'from': '', 'options': [{'number': 1, 'high': 42, 'coord_y': 76.8, 'hash': '916ca6a13247748c0f134620d6f2e640'}, {'number': 2, 'high': 42, 'coord_y': 118.8, 'hash': 'ea4b4bc03737435233b0d3276e236594'}], 'type_id': 36, 'type_name': '小电视校长', 'type_image': 'https://i0.hdslb.com/bfs/face/7b67c0c0da64a6ab059ff49bb0d4b92988b91806.png'}}
+        # {'code': 41020, 'message': '用户基础题已通过', 'ttl': 1}
+        # {'code': 41051, 'message': '用户答题验证码未通过', 'ttl': 1}
+        res_dict = resp.json()
+        if res_dict["code"] == 41051:
+            while True:
+                token, url = self.get_captcha()
+                image_code = self.get_image_code(url)
+                print(image_code)
+                if self.captcha_check(token, image_code):
+                    return
+        res_dict = resp.json()["data"]
+        self.question_id = res_dict["question"]["id"]
+        self.answer_list = [item["hash"] for item in res_dict["question"]["options"]]
+
+    def extra_check(self):
+        for ans_hash in self.answer_list:
+            data_dict = {
+                'access_key': self.token_info['access_token'],
+                "ans_hash": ans_hash,
+                "appkey": "1d8b6e7d45233436",
+                "area": "0",
+                "build": "6240300",
+                "channel": "xxl_gdt_wm_253",
+                'csrf': self.cookie_dict["bili_jct"],
+                "mobi_app": "android",
+                "platform": "h5",
+                "question_id": self.question_id,
+                "re_src": "0",
+                "statistics": quote_plus(
+                    json.dumps({"appId": 1, "platform": 3, "version": "6.24.0", "abtest": ""}, separators=(",", ":"))),
+                "ts": int(time.time()),
+            }
+            data_string = self.get_param_sign_so(data_dict)
+            resp = self.session.get(
+                url="https://api.bilibili.com/x/answer/v4/extra/check",
+                data=data_string,
+                headers={
+                    "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                    "buvid": self.buvid,
+                    'x-csrf-token': self.cookie_dict["bili_jct"],
+                    "referer": "https://www.bilibili.com/h5/newbie/basic-1?score=0",
+                    "native_api_from": 'h5',
+                    "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+                },
+                cookies=self.cookie_dict
+            )
+            res_dict = resp.json()
+            if res_dict["data"]["passed"]:
+                return
 
 
 def run():
@@ -181,8 +367,24 @@ def run():
     while True:
         time.sleep(1)
         info_dict = bili.status()
+        print(info_dict)
+        score = info_dict["data"]["score"]
+        print("得分：", score)
+        if score >= 60:
+            break
+        if info_dict["data"]["stage"] == "base":
+            # 获取question_id和问题答案hash值
+            bili.base()
+            # 检查是否回答正确
+            bili.base_check()
+        elif info_dict["data"]["stage"] == "extra":
+            if not bili.extra():
+                # 图片验证成功，继续答题
+                continue
+            bili.extra_check()
+    bili.session.close()
+    print("答题成功")
 
 
 if __name__ == '__main__':
     run()
-    # print(int(time.time()))
