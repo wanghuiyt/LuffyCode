@@ -1,0 +1,150 @@
+import json
+import time
+from hashlib import md5
+
+import requests
+
+
+class Bilibili(object):
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.region, self.mobile, self.card_url = None, None, None
+
+        self.build_brand = None
+        self.build_model = None
+        self.wifi_mac = None
+        self.device_id = None
+        self.buvid = None
+        self.android_id = None
+        self.session_id = None
+        self.build_fingerprint = None
+        self.build_display = None
+
+        self.fp_local = None
+        self.fp_remote = None
+        self.app_first_run_time = None
+        self.ts = str(int(time.time() - 10))
+
+        self.hash = None
+        self.rsa_pub_key = None
+        self.cookie_info = None
+        self.cookie_dict = None
+        self.token_info = None
+
+        self.initialize()
+
+        self.session = requests.session()
+        self.session.proxies = self.get_proxy_dict()
+
+    @staticmethod
+    def get_proxy_dict():
+        key = "9CEF198A"  # 用户key
+        passwd = "3FD919941B70"  # 用户密码
+
+        resp = requests.get(
+            url="https://proxy.qg.net/extract?Key=9CEF198A&Num=1&AreaId=&Isp=&DataFormat=txt&DataSeparator=%5Cr%5Cn&Detail=0"
+        )
+
+        # host = resp.json()['Data'][0]['host']  # 121.29.81.215:52001
+        host = resp.text
+        print(host)
+
+        # 账密模式
+        proxy = 'http://{}:{}@{}'.format(key, passwd, host)
+        return {"http": proxy, "https": proxy}
+
+    @classmethod
+    def get_video_info(cls, url):
+        session = requests.session()
+        session.proxies = cls.get_proxy_dict()
+        bvid = url.rsplit("/")[-1]
+        resp = session.get(
+            url=f"https://api.bilibili.com/x/player/pagelist?bvid={bvid}&jsonp=jsonp"
+        )
+
+        cid = resp.json()["data"]["cid"]
+        resp = session.get(
+            url=f"https://api.bilibili.com/x/web-interface/view?cid={cid}&bvid={bvid}"
+        )
+        aid = resp.json()["aid"]
+        session.close()
+        return aid
+
+    def initialize(self):
+        with open(self.file_path, mode="r", encoding="utf-8") as f:
+            data_dict = json.load(f)
+        for k, v in data_dict.items():
+            setattr(self, k, v)
+        self.cookie_dict = {item["name"]: item["value"] for item in self.cookie_info["cookies"]}
+
+    def get_param_sign_s(self, param_dict):
+        """
+        根据param_dict中的key排序，拼接，md5计算，拼接sign，并返回
+        :param param_dict: 要签名的参数字典
+        :return:
+        """
+        ordered_string = "&".join([f"{key}={param_dict[key]}" for key in sorted(param_dict.keys())])
+        data_string = ordered_string + "560c52ccd288fed045859ed18bffd973"
+        obj = md5(data_string.encode("utf-8"))
+        sign = obj.hexdigest()
+
+        return f"{ordered_string}&sign={sign}"
+
+    def get_param_sign_so(self, param_dict):
+        """
+        根据param_dict中的key排序，拼接，md5计算，拼接sign，并返回
+        :param param_dict: 要签名的参数字典
+        :return:
+        """
+        ordered_string = "&".join([f"{key}={param_dict[key]}" for key in sorted(param_dict.keys())])
+        data_string = ordered_string + "60698ba2f68e01ce44738920a0ffe768"
+        obj = md5(data_string.encode("utf-8"))
+        sign = obj.hexdigest()
+
+        return f"{ordered_string}&sign={sign}"
+
+    def do_favor(self, aid):
+        data_dict = {
+            'access_key': self.token_info['access_token'],
+            "aid": aid,
+            "appkey": "1d8b6e7d45233436",
+            "build": "6240300",
+            "c_locale": "zh_CN",
+            "channel": "xxl_gdt_wm_253",
+            'like': 0,
+            "mobi_app": "android",
+            "platform": "android",
+            "s_locale": "zh_CN",
+            "statistics": "%7B%22appId%22%3A1%2C%22platform%22%3A3%2C%22version%22%3A%226.24.0%22%2C%22abtest%22%3A%22%22%7D",
+            "ts": int(time.time())
+        }
+
+        data_string = self.get_param_sign_s(data_dict)
+        resp = self.session.post(
+            url="https://app.bilibili.com/x/v2/view/like",
+            data=data_string,
+            headers={
+                "user-agent": "Mozilla/5.0 BiliDroid/6.24.0 (bbcallen@gmail.com) os/android model/21091116AC mobi_app/android build/6240300 channel/xxl_gdt_wm_253 innerVer/6240300 osVer/12 network/2",
+                "buvid": self.buvid,
+                'fp_local': self.fp_local,
+                'fp_remote': self.fp_remote,
+                "device-id": self.device_id,
+                "app-key": 'android',
+                "env": 'prod',
+                'session_id': self.session_id,
+                "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+            }
+        )
+        print(resp.text)
+
+
+def run():
+    file_path = "5813346972.txt"
+    url = "https://www.bilibili.com/video/BV1AW4y187zW"
+    Bilibili.get_video_info(url)
+    bili = Bilibili(file_path)
+    bili.session.close()
+
+
+if __name__ == '__main__':
+    run()
