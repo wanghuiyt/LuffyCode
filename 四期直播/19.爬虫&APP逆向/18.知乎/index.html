@@ -1,0 +1,393 @@
+<!doctype html>
+<html data-theme="light" data-android="true">
+<head>
+    <meta charSet="utf-8"/>
+    <meta name="SearchIndex"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"/>
+    <title data-react-helmet="true">知乎 - 知乎</title>
+    <meta data-react-helmet="true" name="referrer" content="no-referrer-when-downgrade"/>
+    <meta data-react-helmet="true" name="google-site-verification"
+          content="FTeR0c8arOPKh8c5DYh_9uu98_zJbaWw53J-Sch9MTg"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://static.zhihu.com/heifetz/favicon.ico"/>
+    <script data-assets-tracker-config="{&quot;appName&quot;:&quot;amadeus.Android&quot;,&quot;assets&quot;:[&quot;https://static.zhihu.com/amadeus/raven.b3af6b0d8326f0ced58f.js?offline=1&quot;,&quot;https://static.zhihu.com/amadeus/vendor.51c837a3a9be8765a788.js?offline=1&quot;,&quot;https://static.zhihu.com/amadeus/inxta.ad365847db99e2936202.js?offline=1&quot;,&quot;https://static.zhihu.com/amadeus/SearchIndex.3c11efd4f0fa3cea32b8.js?offline=1&quot;,&quot;https://static.zhihu.com/amadeus/inxta.02fb95cf.5f5270acd91b11b0f5e0.css?offline=1&quot;,&quot;https://static.zhihu.com/amadeus/SearchIndex.02fb95cf.7862eb0b80c624d75068.css?offline=1&quot;],&quot;startTimerOn&quot;:&quot;firstAnimationFrame&quot;,&quot;isHybrid&quot;:true,&quot;trackJSRuntimeError&quot;:true,&quot;artifactTag&quot;:&quot;3793-891a8af6&quot;,&quot;spanName&quot;:&quot;SearchIndex&quot;}">!function (e) {
+        "function" == typeof define && define.amd ? define(e) : e()
+    }(function () {
+        "use strict";
+
+        function e(e) {
+            window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.zhihuNativeApp ? window.webkit.messageHandlers.zhihuNativeApp.postMessage(e) : window.zhihuNativeApp && window.zhihuNativeApp.sendToNative && window.zhihuNativeApp.sendToNative(JSON.stringify(e))
+        }
+
+        function t(e) {
+            return function () {
+                try {
+                    e.apply(void 0, arguments)
+                } catch (e) {
+                }
+            }
+        }
+
+        function n(e) {
+            return "string" == typeof e && /^(https?|resource):\/\//.test(e)
+        }
+
+        function r(e, t, n) {
+            return t in e ? Object.defineProperty(e, t, {
+                value: n,
+                enumerable: !0,
+                configurable: !0,
+                writable: !0
+            }) : e[t] = n, e
+        }
+
+        function o(e) {
+            for (var t = 1; t < arguments.length; t++) {
+                var n = null != arguments[t] ? arguments[t] : {}, o = Object.keys(n);
+                "function" == typeof Object.getOwnPropertySymbols && (o = o.concat(Object.getOwnPropertySymbols(n).filter(function (e) {
+                    return Object.getOwnPropertyDescriptor(n, e).enumerable
+                }))), o.forEach(function (t) {
+                    r(e, t, n[t])
+                })
+            }
+            return e
+        }
+
+        var a = {}, i = !1, s = function () {
+            var e, t, n, r, o, s, u, c, d, f, m, v, p, l, w, y, g, h;
+            return i || (e = document.currentScript || document.querySelector("script[data-assets-tracker-config]"), t = e && e.dataset.assetsTrackerConfig || "{}", n = JSON.parse(t), r = n.isHybrid, o = void 0 !== r && r, s = n.assets, u = void 0 === s ? [] : s, c = n.maxTimeout, d = void 0 === c ? 25e3 : c, f = n.startTimerOn, m = void 0 === f ? "immediate" : f, v = n.appName, p = void 0 === v ? "unknown" : v, l = n.artifactTag, w = void 0 === l ? "unknown" : l, y = n.spanName, g = void 0 === y ? "unknown" : y, h = n.trackJSRuntimeError, a = {
+                isHybrid: o,
+                assets: u,
+                maxTimeout: d,
+                startTimerOn: m,
+                appName: p,
+                artifactTag: w,
+                spanName: g,
+                trackJSRuntimeError: void 0 !== h && h
+            }, i = !0), a
+        }, u = function () {
+            var e = s();
+            return {artifactTag: e.artifactTag, spanName: e.spanName, appName: e.appName}
+        }, c = function (e) {
+            var t, n, r;
+            t = "https://www.zhihu.com/sc-assets-tracker", n = e, (r = new XMLHttpRequest).open("POST", t), r.setRequestHeader("Content-Type", "application/json;charset=UTF-8"), r.send(JSON.stringify(n))
+        }, d = t(function (t, n, r) {
+            c(o({}, u(), {
+                error: {
+                    type: "resource",
+                    name: t,
+                    assets: n
+                }
+            }, r && {extra: r})), s().isHybrid && e({
+                module: "stability",
+                action: "setPageStatus",
+                params: {status: "fail", error: "".concat(t)},
+                callbackID: Date.now()
+            })
+        }), f = t(function (e) {
+            var t = s().assets, r = e.target.tagName;
+            if (("SCRIPT" === r || "LINK" === r) && e.target.integrity) {
+                var o = "SCRIPT" === r ? e.target.src : e.target.href;
+                if (n(o) && t.find(function (e) {
+                    return -1 !== o.indexOf(e)
+                })) {
+                    if (window.performance && window.performance.getEntriesByType) {
+                        var a = performance.getEntriesByType("resource"), i = a && a.find(function (e) {
+                            return -1 !== e.name.indexOf(o)
+                        });
+                        i && i.decodedBodySize > 0 && d("sri-mismatch", o)
+                    }
+                    !function (e, t) {
+                        var n = t.onLoad, r = t.onError, o = new XMLHttpRequest;
+                        o.open("GET", e), o.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate"), o.addEventListener("load", function () {
+                            return n(o)
+                        }), o.addEventListener("error", r), o.send()
+                    }(o, {
+                        onLoad: function (e) {
+                            200 <= e.status && e.status <= 299 ? e.responseText ? d("retouch-ok", o) : d("retouch-empty", o) : d("retouch-error-".concat(e.status), o)
+                        }, onError: function () {
+                            d("retouch-unknown-error", o)
+                        }
+                    })
+                }
+            }
+        }), m = function () {
+            return document.addEventListener("error", f, !0)
+        }, v = s(), p = v.assets, l = v.maxTimeout, w = v.startTimerOn, y = function () {
+            setTimeout(function () {
+                if (document.removeEventListener("error", f, !0), window.performance && window.performance.getEntriesByType) {
+                    var e = performance.getEntriesByType("resource"), t = p.map(function (t) {
+                        return e.some(function (e) {
+                            return -1 !== e.name.indexOf(t)
+                        }) ? null : t
+                    }).filter(Boolean);
+                    t.length > 0 && d("perf-timeout", t)
+                }
+            }, l)
+        }, g = function () {
+            "immediate" === w ? y() : "firstAnimationFrame" === w && requestAnimationFrame(y)
+        };
+        var h = t(function (e) {
+            var t = o({}, u(), function (e) {
+                var t = e.error, n = t.name, r = void 0 === n ? "unknown" : n, o = t.message, a = void 0 === o ? "" : o,
+                    i = t.stack, s = void 0 === i ? "" : i, u = e.filename;
+                return {error: {type: "js", name: r, message: a, stack: s.replace(/\n/g, ""), filename: u}}
+            }(e));
+            c(t)
+        }), b = function () {
+            s().trackJSRuntimeError && (window.addEventListener("error", h), function () {
+                var e = function e() {
+                    window.removeEventListener("error", h), document.removeEventListener("DOMContentLoaded", e)
+                }, t = s().assets.filter(function (e) {
+                    return /\.js$/.test(e.split("?")[0])
+                });
+                if ("undefined" != typeof PerformanceObserver && t.length) {
+                    var n = function t() {
+                        return window.Raven || "complete" === document.readyState ? e() : requestAnimationFrame(t)
+                    }, r = new PerformanceObserver(function (e) {
+                        var o = 0;
+                        e.getEntries().forEach(function (e) {
+                            t.includes(e.name) && o++, o === t.length && (r.disconnect(), requestAnimationFrame(n))
+                        })
+                    });
+                    r.observe({entryTypes: ["resource"]})
+                } else document.addEventListener("DOMContentLoaded", e)
+            }())
+        }, T = {0: "load_success", "-1": "load_failed", "-2": "load_timeout"};
+
+        function O(t, n, r, a) {
+            e({module: "base", action: "setAssetStatus", params: o({url: t, type: n, errorCode: r, errMsg: T[r]}, a)})
+        }
+
+        function E(e) {
+            var t = function (e) {
+                return e.split("?")[0]
+            }(e);
+            return t.substr(t.lastIndexOf(".") + 1).toLowerCase()
+        }
+
+        function N(e, t, r) {
+            return n(e.name) && (e.initiatorType === t || E(e.name) === r)
+        }
+
+        function S(e) {
+            return "SCRIPT" === e.tagName
+        }
+
+        function k(e) {
+            return "LINK" === e.tagName && "stylesheet" === e.rel
+        }
+
+        function L(e) {
+            return S(e) ? e.src : e.href
+        }
+
+        var P = 15e3, A = !1;
+        var j = t(function () {
+            if (!A && window.PerformanceObserver && !(/iPhone|iPad|iPod/.test(navigator.userAgent) && (e = navigator.userAgent.match(/osee2unifiedRelease\/(\S+)/), (e ? Number(e[1]) : -1) < 6526))) {
+                var e;
+                A = !0;
+                var r = new Set, o = new Set, a = new Set, i = new Map, s = function (e) {
+                    var t = function () {
+                        clearTimeout(i.get(e)), i.delete(e)
+                    };
+                    i.has(e) ? t() : setTimeout(t, 100)
+                };
+                new PerformanceObserver(t(function (e) {
+                    e.getEntries().forEach(function (e) {
+                        var t, n = e.name;
+                        s(n), o.has(n) || a.has(n) ? (o.delete(n), a.delete(n)) : (("string" == typeof (t = e) ? "js" === E(t) : N(t, "script", "js")) ? O(n, "js", 0) : function (e) {
+                            return "string" == typeof e ? "css" === E(e) : N(e, "css", "css")
+                        }(e) && O(n, "css", 0), r.add(n))
+                    })
+                })).observe({entryTypes: ["resource"]}), document.addEventListener("error", t(function (e) {
+                    var t = e.target;
+                    if (S(t) || k(t)) {
+                        var r = L(t);
+                        s(r), n(r) && !a.has(r) && (O(r, S(t) ? "js" : "css", -1), o.add(r))
+                    }
+                }), !0), function (e) {
+                    if (!e) throw Error("need a callback");
+                    var r = function (e, t) {
+                        e.observe(t, {childList: !0})
+                    }, o = function (t) {
+                        if (S(t) || k(t)) {
+                            var r = L(t);
+                            n(r) && e(r, S(t) ? "js" : "css")
+                        }
+                    }, a = function (e) {
+                        for (var t = 0; t < e.length; t++) o(e[t])
+                    }, i = new MutationObserver(t(function (e) {
+                        e.forEach(function (e) {
+                            var t = e.addedNodes;
+                            return a(t)
+                        })
+                    })), s = new MutationObserver(function (e) {
+                        var t = !0, n = !1, o = void 0;
+                        try {
+                            for (var u, c = e[Symbol.iterator](); !(t = (u = c.next()).done); t = !0) {
+                                var d = u.value.addedNodes;
+                                if (Array.from(d).some(function (e) {
+                                    return "BODY" === e.tagName
+                                })) return r(i, document.body), a(document.body.querySelectorAll("script, link")), s.disconnect(), void (s = null)
+                            }
+                        } catch (e) {
+                            n = !0, o = e
+                        } finally {
+                            try {
+                                t || null == c.return || c.return()
+                            } finally {
+                                if (n) throw o
+                            }
+                        }
+                    });
+                    r(i, document.head), r(s, document.documentElement)
+                }(function (e, t) {
+                    var n = function () {
+                        return r.has(e) || o.has(e)
+                    };
+                    if (!n()) {
+                        var s = setTimeout(function () {
+                            n() || (O(e, t, -2), a.add(e), i.delete(e))
+                        }, P);
+                        i.set(e, s)
+                    }
+                })
+            }
+        });
+        m(), g(), b(), s().isHybrid && j()
+    });
+    </script>
+    <style data-emotion-css="15oaklh">.u-safeAreaInset-top {
+        height: constant(safe-area-inset-top) !important;
+        height: env(safe-area-inset-top) !important;
+        height: 35px !important;
+    }
+
+    .u-safeAreaInset-bottom {
+        height: constant(safe-area-inset-bottom) !important;
+        height: env(safe-area-inset-bottom) !important;
+    }</style>
+    <link href="https://static.zhihu.com/amadeus/inxta.02fb95cf.5f5270acd91b11b0f5e0.css?offline=1" rel="stylesheet"
+          integrity="sha256-1+MkCj/RTrW2VB3fUFojdVYmvYOerbUy8n8iVksvCmk= sha384-cYuOyR7qVqELJalUhveDaPiNgzB68jbXQcaV2/Dhh3si9Pv/HtyByJxRvIhJENMG"
+          crossorigin="anonymous"/>
+    <link href="https://static.zhihu.com/amadeus/SearchIndex.02fb95cf.7862eb0b80c624d75068.css?offline=1"
+          rel="stylesheet"
+          integrity="sha256-A4WQsP1RHH71tAAyaW+Y3GqsvqV913OEf8UJ2FR22yU= sha384-4NHkUqgS6NTkys2NQTMn9p/56d4qGTjUQ6jn7n4+Mvr3eap2oJerYiI8Th6eszyl"
+          crossorigin="anonymous"/>
+    <link rel="dns-prefetch" href="//pic1.zhimg.com"/>
+    <link rel="dns-prefetch" href="//pic2.zhimg.com"/>
+    <link rel="dns-prefetch" href="//pic3.zhimg.com"/>
+    <link rel="dns-prefetch" href="//pic4.zhimg.com"/>
+    <script>"visible" === (document.visibilityState || document.webkitVisibilityState) && requestAnimationFrame(function () {
+        window.FIRST_ANIMATION_FRAME = Date.now()
+    });</script>
+    <script>window.ARTIFACT_TAG = '3793-891a8af6'</script>
+</head>
+<body>
+<div id="root">
+    <div class="App App--appView App--unifiedStyle App--AndroidAppView">
+        <style data-emotion-css="14ruw4j">body {
+            margin: 0;
+            background-color: #FFFFFF;
+        }</style>
+        <main class="AppMain" style="padding-top:0">
+            <div class="SearchLoading--FullScreen">
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+                <section class="skeleton skeleton--spacing skeleton--ease-in" style="width:auto;height:12px"></section>
+                <section class="skeleton skeleton--c02 skeleton--ease-in" style="width:auto">
+                    <div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                        <div class="skeleton__line skeleton__line--c02"></div>
+                    </div>
+                    <div class="skeleton__block skeleton__block--c02"></div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+<script>window.AppViewBridge && "function" == typeof AppViewBridge.webPageReady && AppViewBridge.webPageReady(), window.zhihuNativeApp && window.zhihuNativeApp.webPageReady && window.zhihuNativeApp.webPageReady();</script>
+<script>!function () {
+    if ("undefined" != typeof window) {
+        var e = document.querySelector('meta[name="za-config"]');
+        if (e) {
+            var i = /iPhone|iPad|iPod/.test(navigator.userAgent);
+            window.zhihuNativeApp && window.zhihuNativeApp.setZaConfig && window.zhihuNativeApp.setZaConfig(i ? JSON.parse(e.content) : e.content)
+        }
+    }
+}();</script>
+<script id="js-initialData" type="text/json">
+    {"initialState":{"questions":{},"answers":{},"answersOffset":0,"questionId":null,"answerIds":[],"restAnswerIds":[],"isLoading":false,"isDrained":false,"isModalOpen":false,"adBanner":null,"appViewFooter":null,"isCommentLoading":false,"commentsByQuestion":{},"commentsByAnswer":{},"relatedLives":{},"isRegisterPanelOpen":false,"video":{},"videoList":[],"recommendations":null,"relatedReadings":[],"settings":null,"answerRewarders":[],"advancedStyle":{},"token":{"carCompose":"gt2.0AAAAAD34_ZwVkOsEsRhgAAAAAAxNVQJgAgCXqs7DmFVBoWB4BkLH0H93FHv3Fg=="},"env":{"isAppView":true,"appViewConfig":{"is_dark_theme":false,"search_type_panel_types":"[general, people, zvideo, km_general, publication, topic, column, pin]","search_tab":"collapsed","X-SUGER":"VURJRD1BR0FZc1FUcmtCVkxCUXhhV2xSNjNkeFlhQ2pXdk9hc3U1TT07QU5EUk9JRF9JRD03YjJjM2Y3ZjdiOTUxZjZjO01BQz03RTo2Mjo1RDo2Njo3RTo2Mg=="},"xSafeAreaInsetInfo":{"xSafeAreaInsetTop":35,"xSafeAreaInsetBottom":0,"xSafeAreaInsetRight":0,"xSafeAreaInsetLeft":0},"supports":{},"query":{"config":"{\"is_dark_theme\":false,\"search_type_panel_types\":\"[general, people, zvideo, km_general, publication, topic, column, pin]\",\"search_tab\":\"collapsed\",\"X-SUGER\":\"VURJRD1BR0FZc1FUcmtCVkxCUXhhV2xSNjNkeFlhQ2pXdk9hc3U1TT07QU5EUk9JRF9JRD03YjJjM2Y3ZjdiOTUxZjZjO01BQz03RTo2Mjo1RDo2Njo3RTo2Mg==\"}","ab_signature":"CiRBR0FZc1FUcmtCVkxCUXhhV2xSNjNkeFlhQ2pXdk9hc3U1TT0SIDAwYzY1N2ZmZmMxYTMzMjQ3YjdjN2ExNWI4ZGY1NGQ2GhAIARIGNS4zMi4xGgQxMDMx"},"authInfo":{"uid":1554000295558054000,"userType":"guest","id":"00c657fffc1a33247b7c7a15b8df54d6"},"isLiteApp":false,"mode":"ssr","sdrFinish":false,"trafficSource":"production","uaParsed":{"ua":"ZhihuHybrid com.zhihu.android\u002FFutureve\u002F5.32.1 Mozilla\u002F5.0 (Linux; Android 12; 21091116AC Build\u002FSP1A.210812.016; wv) AppleWebKit\u002F537.36 (KHTML, like Gecko) Version\u002F4.0 Chrome\u002F99.0.4844.88 Mobile Safari\u002F537.36","browser":{"name":"Chrome WebView","version":"99.0.4844.88","major":"99"},"engine":{"name":"Blink","version":"99.0.4844.88"},"os":{"name":"android","version":"Futureve"},"device":{"model":"21091116AC","type":"mobile"},"cpu":{}},"Authorization":"Bearer gt2.0AAAAAD34_ZwVkOsEsRhgAAAAAAxNVQJgAgCXqs7DmFVBoWB4BkLH0H93FHv3Fg==","xAppZa":"OS=Android&Release=12&Model=21091116AC&VersionName=5.32.1&VersionCode=1031&Product=com.zhihu.android&Width=1080&Height=2260&Installer=%E5%BA%94%E7%94%A8%E5%AE%9D&DeviceType=AndroidPhone&Brand=Redmi","xUDId":"AGAYsQTrkBVLBQxaWlR63dxYaCjWvOasu5M=","xAPIVersion":"3.0.76","xAppVersion":"5.32.1","xAppFlavor":"myapp","xNetworkType":"WiFi","xZst82":"1.0AKCW0oU3khUMAAAASwUAADEuMOUBJWMAAAAAmiEytoAf3NnrqGQuaBW1oB0i7_A="},"ui":{"isContentTouchBottom":false},"user":{},"ab":{"config":{"experiments":[],"params":[{"id":"qa_clscree_auth","type":"Int","value":"0","chainId":"_gene_","layerId":"qa_clscree_auth","key":2513},{"id":"ques_follow_con","type":"Int","value":"0","chainId":"_gene_","layerId":"ques_follow_con","key":3320}],"chains":[{"chainId":"_all_"}],"encodedParams":"CtQBGwA\u002FAEcAtABpAWoBdAE7AswC1wLYAk8DUAOgA6EDogO3A\u002FMD9AMzBIwEjQSmBNYEEQUyBVEFiwWMBZ4FMAYxBn4G6wYnB3cHeAfYB9wH3QcnCGcIdAh2CHkIxQjaCD8JQglUCVUJYAmNCcMJxAnFCcYJxwnICckJygnLCcwJ0QnlCfEJ9AkECkkKZQprCpgKpQqpCr4KxArUCt0K7Qr9Cv4KOws8C0MLRgtxC3YLhQuHC40LuQvAC9cL4AvlC+YLLAw4DHEMjwysDLkMwwzJDPgMtQsSagAAAAAAAAAAAAEAAAEAAQAAAAAABAQABAABAQAAAQAAAAAAAAAAAgIABAACBgAAAAEBAQIAAAAAAAAAAAAAAAABAQMFAwAAAQAAAAEBAAAAAAEBAQAAAAAABQAAAgEAAAYCBAAAAAEAAAM="},"triggers":{}},"vipSwitches":{},"search":{"keyword":"","searchType":"","passOn":"","inputQuery":"","searchSource":"","pageSource":"","hybridSearchSource":"","hybridSearchExtra":null,"searchTimelinessMode":"normal","rawQuery":"","paging":{"isEnd":false,"offset":0},"contentList":[],"historyContentSection":[],"entities":{},"historyEntities":{},"isRequesting":false,"error":false,"attachedInfoBytes":"","searchHashId":"","lcIdx":0,"zaInfo":{},"rank":{"hot":[]},"searchCounter":0,"waitingResultTimeout":false,"antiSpider":false,"customFilter":"","videoCanAutoplay":false,"currentVideoInfo":{},"currentDate":0}},"spanName":"SearchIndex"}
+</script>
+<script id="js-clientConfig" type="text/json">
+    {"host":"zhihu.com","protocol":"https:","wwwHost":"www.zhihu.com","zhuanlanHost":"zhuanlan.zhihu.com","lensRoot":"https:\u002F\u002Flens.zhihu.com\u002Fapi\u002F","apiRoot":"https:\u002F\u002Fwww.zhihu.com\u002Fapi\u002Fv4\u002F","subdomainAPIRoot":"https:\u002F\u002Fapi.zhihu.com\u002F"}
+</script>
+<script async="" src="https://static.zhihu.com/amadeus/raven.b3af6b0d8326f0ced58f.js?offline=1"
+        integrity="sha256-o3aZC33f9hDOCnpjcE9GYxFadJaLs7dzCvtjmgEbtxQ= sha384-r5Nd+qANCe+LOom5spWpfRQLjvB/gJF+R7P9c9SVecahMGhethyCsZZdUwsF2ltH"
+        crossorigin="anonymous"></script>
+<script async="" src="https://static.zhihu.com/amadeus/vendor.51c837a3a9be8765a788.js?offline=1"
+        integrity="sha256-0eFvJtnQrbpqd/o2e8XGMpjsCweHQWGECJCdAaAX/OQ= sha384-UEBgrz7DnimR3Q7I6wSE9QQsW8x7FpTJpfxE7O9guEUM7rxGRV4RoFTAHoxveQFU"
+        crossorigin="anonymous"></script>
+<script async="" src="https://static.zhihu.com/amadeus/inxta.ad365847db99e2936202.js?offline=1"
+        integrity="sha256-IR0v+iqc/nz5gqZDxY2flwHH+oFRjZWRranF6kBXkU8= sha384-wSr6SnX9qs5Ef5JgK0x7Vq7PjKCDRC1Tdr03DdeGl+6jNsXEvnF6rLpwX+RM7cWm"
+        crossorigin="anonymous"></script>
+<script async="" src="https://static.zhihu.com/amadeus/SearchIndex.3c11efd4f0fa3cea32b8.js?offline=1"
+        integrity="sha256-p+/1+YWUSYjQJ+bqzsdGFrQiAm4mk8MV05qBs8+6L7g= sha384-32g3bs/lgUeuw1Hv2PauvrycY+AyiMmGrvxVpTe9zvipg7qDM440rzy+tWD4DVU7"
+        crossorigin="anonymous"></script>
+</body>
+</html>
