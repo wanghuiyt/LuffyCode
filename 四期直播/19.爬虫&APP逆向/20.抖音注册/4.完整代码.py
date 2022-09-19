@@ -2,11 +2,12 @@ import gzip
 import random
 import time
 import uuid
-import requests
 from hashlib import md5
+from urllib.parse import quote_plus
+
+import requests
 
 import dy_gorgon2
-from urllib.parse import quote_plus
 
 
 def create_random_mac(sep=":"):
@@ -46,7 +47,7 @@ def run():
     ts = int(time.time())
     _rticket2 = int(time.time() * 1000)
 
-    param_str = f"ac=wifi&mac_address={mac_address}&channel=gdt_growth14_big_yybwz&aid=1128&app_name=aweme&version_code=110500&version_name=11.5.0&device_platform=android&ssmix=a&device_type={device_type}&device_brand=Redmi&language=zh&os_api=31&os_version=12&openudid={openudid}&manifest_version_code=110501&resolution=1080*2260&dpi=440&update_version_code=11509900&_rticket={_rticket}&mcc_mnc=46001&cpu_support64=true&host_abi=armeabi-v7a&app_type=normal&ts={ts}&cdid={cdid}&oaid={oaid}&manifest_version_code=110501&_rticket={_rticket2}&app_type=normal&channel=gdt_growth14_big_yybwz&device_type={device_type}&language=zh&cpu_support64=true&host_abi=armeabi-v7a&resolution=1080*2260&openudid={openudid}&update_version_code=11509900&cdid={cdid}&os_api=31&mac_address={mac_address}&dpi=440&oaid={oaid}&ac=wifi&mcc_mnc=46001&os_version=12&version_code=110500&app_name=aweme&version_name=11.5.0&device_brand=Redmi&ssmix=a&device_platform=android&aid=1128&ts={ts}"
+    param_str = "ac=wifi&mac_address={mac_address}&channel=gdt_growth14_big_yybwz&aid=1128&app_name=aweme&version_code=110500&version_name=11.5.0&device_platform=android&ssmix=a&device_type={device_type}&device_brand=Redmi&language=zh&os_api=31&os_version=12&openudid={openudid}&manifest_version_code=110501&resolution=1080*2260&dpi=440&update_version_code=11509900&_rticket={_rticket}&mcc_mnc=46001&cpu_support64=true&host_abi=armeabi-v7a&app_type=normal&ts={ts}&cdid={cdid}&oaid={oaid}&manifest_version_code=110501&_rticket={_rticket2}&app_type=normal&channel=gdt_growth14_big_yybwz&device_type={device_type}&language=zh&cpu_support64=true&host_abi=armeabi-v7a&resolution=1080*2260&openudid={openudid}&update_version_code=11509900&cdid={cdid}&os_api=31&mac_address={mac_address}&dpi=440&oaid={oaid}&ac=wifi&mcc_mnc=46001&os_version=12&version_code=110500&app_name=aweme&version_name=11.5.0&device_brand=Redmi&ssmix=a&device_platform=android&aid=1128&ts={ts}"
 
     data_string = param_str.format(
         mac_address=quote_plus(mac_address),
